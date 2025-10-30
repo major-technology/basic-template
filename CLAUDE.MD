@@ -24,6 +24,7 @@ This is a Next.js 15 application with the App Router architecture:
 
 - **[lib/](lib/)** - Utility functions and shared code
   - **[lib/utils.ts](lib/utils.ts)** - Common utilities including `cn()` for class merging
+  - **[lib/resource-client/](lib/resource-client/)** - Type-safe client for Major Tech resources (PostgreSQL, S3, APIs)
 
 ## Tech Stack
 
@@ -102,7 +103,9 @@ pnpm start
 pnpm lint
 ```
 
-## Styling Utilities
+## Utilities
+
+### Styling
 
 Use the `cn()` utility from [lib/utils.ts](lib/utils.ts) to merge Tailwind classes:
 
@@ -111,6 +114,52 @@ import { cn } from "@/lib/utils"
 
 <div className={cn("base-class", conditional && "conditional-class")} />
 ```
+
+### Major Tech Resources
+
+The [lib/resource-client/](lib/resource-client/) provides a type-safe client for invoking Major Tech resources:
+
+```typescript
+import { ResourceClient } from '@/lib/resource-client';
+
+const client = new ResourceClient({
+  baseUrl: process.env.MAJOR_API_BASE_URL!,
+  majorJWTToken: process.env.MAJOR_JWT_TOKEN!,
+});
+
+// Database queries
+const dbResponse = await client.invokePostgres(
+  process.env.APPLICATION_ID!,
+  'resource-id',
+  'SELECT * FROM users WHERE id = $1',
+  [userId],
+  'get-user'
+);
+
+// Custom API calls
+const apiResponse = await client.invokeCustomApi(
+  process.env.APPLICATION_ID!,
+  'resource-id',
+  'GET',
+  '/api/data',
+  'fetch-data'
+);
+
+// S3 operations
+const s3Response = await client.invokeS3(
+  process.env.APPLICATION_ID!,
+  'resource-id',
+  'GeneratePresignedUrl',
+  { Bucket: 'my-bucket', Key: 'file.pdf', Method: 'GET', ExpiresIn: 3600 },
+  'generate-url'
+);
+```
+
+**Key Features:**
+- Type-safe responses for each resource type
+- Automatic header management (x-major-jwt, x-major-user-id)
+- Support for PostgreSQL, Custom APIs, HubSpot, and S3
+- See [lib/resource-client/README.MD](lib/resource-client/README.MD) for full documentation
 
 ## Next Steps for AI Agents
 
