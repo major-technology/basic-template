@@ -1,6 +1,6 @@
 import { ApiResult } from "./common";
 import { DbResult } from "./postgres";
-import { StorageS3Result } from "./storage";
+import { StorageS3Result } from "./s3";
 
 /**
  * Union of all possible resource invocation result types

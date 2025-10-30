@@ -80,7 +80,7 @@ export class ResourceClient {
     payload: ResourceInvokePayload,
     invocationKey: string,
   ): Promise<InvokeResponse> {
-    const url = `${this.config.baseUrl}/v1/${applicationId}/resource/${resourceId}/invoke`;
+    const url = `${this.config.baseUrl}/internal/apps/v1/${applicationId}/resource/${resourceId}/invoke`;
     const headersList = await headers();
     
     const userId = headersList.get("x-major-user-id");
