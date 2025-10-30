@@ -10,6 +10,9 @@ import {
   QueryParams,
   BodyPayload,
   S3Command,
+  DatabaseInvokeResponse,
+  ApiInvokeResponse,
+  StorageInvokeResponse,
 } from "./schemas";
 import { ResourceInvokeError } from "./errors";
 
@@ -129,7 +132,7 @@ export class ResourceClient {
     params: Array<string | number | boolean | null> | undefined,
     invocationKey: string,
     timeoutMs?: number
-  ): Promise<InvokeResponse> {
+  ): Promise<DatabaseInvokeResponse> {
     const payload: DbPostgresPayload = {
       type: "database",
       subtype: "postgresql",
@@ -138,7 +141,7 @@ export class ResourceClient {
       timeoutMs,
     };
 
-    return this.invoke(applicationId, resourceId, payload, invocationKey);
+    return this.invoke(applicationId, resourceId, payload, invocationKey) as Promise<DatabaseInvokeResponse>;
   }
 
   /**
@@ -164,7 +167,7 @@ export class ResourceClient {
       body?: BodyPayload;
       timeoutMs?: number;
     } = {}
-  ): Promise<InvokeResponse> {
+  ): Promise<ApiInvokeResponse> {
     const payload: ApiCustomPayload = {
       type: "api",
       subtype: "custom",
@@ -181,7 +184,7 @@ export class ResourceClient {
       resourceId,
       payload,
       invocationKey
-    );
+    ) as Promise<ApiInvokeResponse>;
   }
 
   /**
@@ -207,7 +210,7 @@ export class ResourceClient {
       body?: { type: "json"; value: unknown };
       timeoutMs?: number;
     } = {}
-  ): Promise<InvokeResponse> {
+  ): Promise<ApiInvokeResponse> {
     const payload: ApiHubSpotPayload = {
       type: "api",
       subtype: "hubspot",
@@ -223,7 +226,7 @@ export class ResourceClient {
       resourceId,
       payload,
       invocationKey
-    );
+    ) as Promise<ApiInvokeResponse>;
   }
 
   /**
@@ -246,7 +249,7 @@ export class ResourceClient {
     options: {
       timeoutMs?: number;
     } = {}
-  ): Promise<InvokeResponse> {
+  ): Promise<StorageInvokeResponse> {
     const payload: StorageS3Payload = {
       type: "storage",
       subtype: "s3",
@@ -260,7 +263,7 @@ export class ResourceClient {
       resourceId,
       payload,
       invocationKey
-    );
+    ) as Promise<StorageInvokeResponse>;
   }
 }
 
