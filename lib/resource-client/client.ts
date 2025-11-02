@@ -86,7 +86,7 @@ export class ResourceClient {
     const url = `${this.config.baseUrl}/internal/apps/v1/${applicationId}/resource/${resourceId}/invoke`;
     const headersList = await headers();
     
-    const userId = headersList.get("x-major-user-id");
+    const userJWT = headersList.get("x-major-user-jwt");
     const body: InvokeRequest = {
       payload,
       invocationKey,
@@ -98,7 +98,7 @@ export class ResourceClient {
         headers: {
           "Content-Type": "application/json",
           "x-major-jwt": this.config.majorJWTToken,
-          ...(userId ? { "x-major-user-id": userId } : {}),
+          ...(userJWT ? { "x-major-user-jwt": userJWT } : {}),
         },
         body: JSON.stringify(body),
       });
