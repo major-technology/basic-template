@@ -183,3 +183,6 @@ When given a project brief:
 ---
 
 **Remember**: This template is intentionally minimal. Your job is to transform it into a fully functional application based on the user's requirements!
+
+## Resources you have access to
+Look at the RESOURCES.md file to see a list of all the resource_ids + descriptions this app has access to.
