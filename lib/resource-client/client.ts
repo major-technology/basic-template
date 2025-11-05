@@ -43,7 +43,7 @@ export interface ClientConfig {
  * });
  * 
  * // Invoke a database resource
- * const result = await client.invokeDatabase(
+ * const result = await client.invokePostgres(
  *   'app-id',
  *   'resource-id',
  *   'SELECT * FROM users WHERE id = $1',
