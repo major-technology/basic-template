@@ -27,7 +27,7 @@ const client = new ResourceClient({
 
 ```typescript
 // Query a PostgreSQL database
-const response = await client.invokeDatabase(
+const response = await client.invokePostgres(
   'application-id',
   'resource-id',
   'SELECT * FROM users WHERE id = $1',
