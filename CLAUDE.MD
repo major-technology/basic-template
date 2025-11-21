@@ -13,33 +13,38 @@
 This is a Next.js 15 application with the App Router architecture:
 
 ### Key Directories
+
 - **[app/](app/)** - App Router pages and layouts
+
   - **[app/page.tsx](app/page.tsx)** - Home page (currently placeholder, REPLACE THIS)
   - **[app/layout.tsx](app/layout.tsx)** - Root layout with Tailwind CSS setup
   - **[app/api/](app/api/)** - Create API routes here (e.g., `app/api/users/route.ts`)
     - **[app/api/healthz/](app/api/healthz/)** - Health check endpoint (DO NOT REMOVE)
 
 - **[components/](components/)** - Reusable React components
+
   - **[components/ui/](components/ui/)** - shadcn/ui components (install as needed)
 
 - **[lib/](lib/)** - Utility functions and shared code
   - **[lib/utils.ts](lib/utils.ts)** - Common utilities including `cn()` for class merging
-  - **[lib/resource-client/](lib/resource-client/)** - Type-safe client for Major Tech resources (PostgreSQL, S3, APIs)
 
 ## Tech Stack
 
 ### Core
+
 - **Next.js 15.5.2** with App Router
 - **React 19.1** (stable)
 - **TypeScript 5**
 
 ### Styling
+
 - **Tailwind CSS 4** (PostCSS)
 - **shadcn/ui** components (pre-initialized)
 - **lucide-react** for icons
 - **class-variance-authority** for component variants
 
 ### Development
+
 - **Turbo mode** enabled for faster dev server
 - **ESLint** + **TypeScript** checking via `pnpm lint`
 
@@ -63,12 +68,12 @@ Create API endpoints in the `app/api/` directory:
 ```typescript
 // app/api/hello/route.ts
 export async function GET() {
-  return Response.json({ message: 'Hello World' })
+  return Response.json({ message: "Hello World" });
 }
 
 export async function POST(request: Request) {
-  const body = await request.json()
-  return Response.json({ received: body })
+  const body = await request.json();
+  return Response.json({ received: body });
 }
 ```
 
@@ -103,6 +108,28 @@ pnpm start
 pnpm lint
 ```
 
+## Resource Clients
+
+**CRITICAL**: All resource access MUST go through auto-generated clients from `@major-tech/resource-client`.
+
+### Using Generated Clients
+
+Import and use the auto-generated clients from `/clients/`:
+
+```typescript
+import { ordersDbClient } from "./clients";
+
+const result = await ordersDbClient.invoke(
+  "SELECT * FROM orders WHERE user_id = $1",
+  [userId],
+  "fetch-user-orders"
+);
+
+if (result.ok) {
+  console.log(result.result.rows);
+}
+```
+
 ## Utilities
 
 ### Styling
@@ -110,56 +137,10 @@ pnpm lint
 Use the `cn()` utility from [lib/utils.ts](lib/utils.ts) to merge Tailwind classes:
 
 ```typescript
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-<div className={cn("base-class", conditional && "conditional-class")} />
+<div className={cn("base-class", conditional && "conditional-class")} />;
 ```
-
-### Major Tech Resources
-
-The [lib/resource-client/](lib/resource-client/) provides a type-safe client for invoking Major Tech resources:
-
-```typescript
-import { ResourceClient } from '@/lib/resource-client';
-
-const client = new ResourceClient({
-  baseUrl: process.env.MAJOR_API_BASE_URL!,
-  majorJWTToken: process.env.MAJOR_JWT_TOKEN!,
-});
-
-// Database queries
-const dbResponse = await client.invokePostgres(
-  process.env.APPLICATION_ID!,
-  'resource-id',
-  'SELECT * FROM users WHERE id = $1',
-  [userId],
-  'get-user'
-);
-
-// Custom API calls
-const apiResponse = await client.invokeCustomApi(
-  process.env.APPLICATION_ID!,
-  'resource-id',
-  'GET',
-  '/api/data',
-  'fetch-data'
-);
-
-// S3 operations
-const s3Response = await client.invokeS3(
-  process.env.APPLICATION_ID!,
-  'resource-id',
-  'GeneratePresignedUrl',
-  { Bucket: 'my-bucket', Key: 'file.pdf', Method: 'GET', ExpiresIn: 3600 },
-  'generate-url'
-);
-```
-
-**Key Features:**
-- Type-safe responses for each resource type
-- Automatic header management (x-major-jwt, x-major-user-id)
-- Support for PostgreSQL, Custom APIs, HubSpot, and S3
-- See [lib/resource-client/README.MD](lib/resource-client/README.MD) for full documentation
 
 ## Next Steps for AI Agents
 
