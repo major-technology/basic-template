@@ -4,9 +4,14 @@ export default function Home() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <h1 className="text-5xl font-bold tracking-tighter font-[family-name:var(--font-outfit)]">
-          major build
-        </h1>
+         <Image
+          className="dark:invert"
+          src="/major-build.svg"
+          alt="major build logo"
+          width={240}
+          height={45}
+          priority
+        />
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
