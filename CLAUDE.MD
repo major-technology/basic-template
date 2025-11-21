@@ -4,7 +4,7 @@
 
 **This is a blank canvas meant to be transformed into a real application.** When you receive instructions about what to build:
 
-1. **Update this CLAUDE.MD file first** with project-specific context about the actual application
+1. **Update this CLAUDE.MD file first** with project-specific context about the actual application. Also update README.md
 2. **Replace the placeholder content in [app/page.tsx](app/page.tsx)** with the real first page of the application
 3. **Build the application** according to the user's requirements
 
@@ -164,6 +164,3 @@ When given a project brief:
 ---
 
 **Remember**: This template is intentionally minimal. Your job is to transform it into a fully functional application based on the user's requirements!
-
-## Resources you have access to
-Look at the RESOURCES.md file to see a list of all the resource_ids + descriptions this app has access to.
