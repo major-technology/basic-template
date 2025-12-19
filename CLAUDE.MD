@@ -8,9 +8,13 @@
 2. **Replace the placeholder content in [app/page.tsx](app/page.tsx)** with the real first page of the application
 3. **Build the application** according to the user's requirements
 
+## 🤖 AI Assistant Instructions: Keep This File Updated
+
+**IMPORTANT:** When making significant changes to this codebase, you MUST update this CLAUDE.md file to reflect those changes. This ensures future AI assistants and developers have accurate context.
+
 ## Project Structure
 
-This is a Next.js 15 application with the App Router architecture:
+This is a Next.js 16 application with the App Router architecture:
 
 ### Key Directories
 
@@ -32,7 +36,7 @@ This is a Next.js 15 application with the App Router architecture:
 
 ### Core
 
-- **Next.js 15.5.2** with App Router
+- **Next.js 16.1** with App Router
 - **React 19.1** (stable)
 - **TypeScript 5**
 
@@ -61,25 +65,7 @@ npx shadcn@latest add dialog
 
 Components will be installed to [components/ui/](components/ui/). See the [shadcn/ui docs](https://ui.shadcn.com/) for available components.
 
-## API Routes
-
-Create API endpoints in the `app/api/` directory:
-
-```typescript
-// app/api/hello/route.ts
-export async function GET() {
-  return Response.json({ message: "Hello World" });
-}
-
-export async function POST(request: Request) {
-  const body = await request.json();
-  return Response.json({ received: body });
-}
-```
-
-Access at: `http://localhost:3000/api/hello`
-
-### Health Check Endpoint
+## Health Check Endpoint
 
 **CRITICAL: DO NOT REMOVE OR MODIFY [app/api/healthz/route.ts](app/api/healthz/route.ts)**
 
@@ -157,7 +143,7 @@ When given a project brief:
 ## Template Configuration
 
 - **Package manager**: pnpm (preferred)
-- **Node version**: 20+
+- **Next.js version**: 16.1
 - **Git**: Initialized, current branch: `main`
 - **shadcn config**: [components.json](components.json)
 
