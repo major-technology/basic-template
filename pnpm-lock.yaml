@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@major-tech/resource-client':
-        specifier: ^0.2.10
-        version: 0.2.10
+        specifier: ^0.2.11
+        version: 0.2.11
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -478,8 +478,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@major-tech/resource-client@0.2.10':
-    resolution: {integrity: sha512-LfTRAKi3DoNv8HIF+Hh2PiAvu68oOGPWIiEZVAyHRSA4gNZ1fQoQgh4BtEB4jmVOrajN079XkZ74CwxtAzxQUw==}
+  '@major-tech/resource-client@0.2.11':
+    resolution: {integrity: sha512-PqhCGfQ4UmqOc6BkQrejR974yHGRSbBbd2CeRpbkd7GgESu6rYWAwnzVNKXN1lUUXHBkj48pb5d5bhnut4Q4FA==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -2944,7 +2944,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@major-tech/resource-client@0.2.10':
+  '@major-tech/resource-client@0.2.11':
     dependencies:
       '@aws-sdk/client-dynamodb': 3.936.0
     transitivePeerDependencies:
