@@ -12,7 +12,7 @@
     "resource:list": "major-client list"
   },
   "dependencies": {
-    "@major-tech/resource-client": "^0.2.11",
+    "@major-tech/resource-client": "^0.2.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.542.0",
