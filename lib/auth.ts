@@ -13,6 +13,10 @@ export interface CurrentUserResponse{
 
 const API_BASE_URL = process.env.MAJOR_API_BASE_URL || 'https://go-api.prod.major.build'
 
+/**
+ * Gets the information about the currently authenticated user.
+ * @returns Current authenticated user information
+ */
 export async function getCurrentUser(): Promise<CurrentUserResponse> {
   const h = await headers()
   const jwt = h.get('x-major-user-jwt')
