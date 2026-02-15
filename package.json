@@ -7,9 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint && tsc --noEmit",
-    "resource:add": "major-client add --framework nextjs",
-    "resource:remove": "major-client remove --framework nextjs",
-    "resource:list": "major-client list"
+    "resource:manage": "major resource manage"
   },
   "dependencies": {
     "@major-tech/resource-client": "^0.2.25",
