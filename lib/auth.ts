@@ -7,8 +7,8 @@ export interface User {
   name: string
 }
 
-export interface CurrentUserResponse{
-    user: User
+export interface CurrentUserResponse {
+  user: User
 }
 
 const API_BASE_URL = process.env.MAJOR_API_BASE_URL || 'https://go-api.prod.major.build'
@@ -20,7 +20,7 @@ const API_BASE_URL = process.env.MAJOR_API_BASE_URL || 'https://go-api.prod.majo
 export async function getCurrentUser(): Promise<CurrentUserResponse> {
   const h = await headers()
   const jwt = h.get('x-major-user-jwt')
-  
+
   if (!jwt) {
     throw new Error('No user JWT found. Ensure x-major-user-jwt header is present.')
   }
