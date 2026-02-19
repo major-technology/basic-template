@@ -10,7 +10,7 @@
     "resource:manage": "major resource manage"
   },
   "dependencies": {
-    "@major-tech/resource-client": "^0.2.25",
+    "@major-tech/resource-client": "^0.2.27",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.542.0",

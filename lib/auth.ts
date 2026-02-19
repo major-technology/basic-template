@@ -19,14 +19,22 @@ const API_BASE_URL = process.env.MAJOR_API_BASE_URL || 'https://go-api.prod.majo
  */
 export async function getCurrentUser(): Promise<CurrentUserResponse> {
   const h = await headers()
-  const jwt = h.get('x-major-user-jwt')
+  const userJwt = h.get('x-major-user-jwt')
+  const majorJwtToken = process.env.MAJOR_JWT_TOKEN
 
-  if (!jwt) {
+  if (!userJwt && !majorJwtToken) {
     throw new Error('No user JWT found. Ensure x-major-user-jwt header is present.')
   }
 
+  const fetchHeaders: Record<string, string> = {}
+  if (userJwt) {
+    fetchHeaders['x-major-user-jwt'] = userJwt
+  } else {
+    fetchHeaders['x-major-jwt'] = majorJwtToken!
+  }
+
   const res = await fetch(`${API_BASE_URL}/internal/apps/v1/me`, {
-    headers: { 'x-major-user-jwt': jwt }
+    headers: fetchHeaders,
   })
 
   if (!res.ok) {
