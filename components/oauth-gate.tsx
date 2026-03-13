@@ -1,4 +1,4 @@
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
 import type { ReactNode } from "react";
 
 import { OAuthGateScreen } from "./oauth-gate-screen";
@@ -28,12 +28,6 @@ function buildCurrentUrl(h: Headers): string {
 }
 
 export async function OAuthGate({ children }: { children: ReactNode }) {
-  const cookieStore = await cookies();
-
-  if (cookieStore.get("major-user-oauth")) {
-    return <>{children}</>;
-  }
-
   const h = await headers();
   const userJwt = h.get("x-major-user-jwt");
 
@@ -71,13 +65,6 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
   );
 
   if (needsConnection.length === 0) {
-    cookieStore.set("major-user-oauth", "1", {
-      maxAge: 300,
-      httpOnly: true,
-      sameSite: "lax",
-      path: "/",
-    });
-
     return <>{children}</>;
   }
 
