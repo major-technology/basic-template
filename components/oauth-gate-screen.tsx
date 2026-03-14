@@ -15,23 +15,14 @@ interface OAuthGateScreenProps {
   authUrls: Record<string, string>;
 }
 
-interface OAuthRequirement {
-  provider: string;
-  requiredAccess: string;
-  resourceId: string;
-}
-
 const PROVIDER_DISPLAY: Record<string, { name: string; logo: () => React.ReactNode }> = {
   google: { name: "Google", logo: GoogleLogo },
 };
 
 export function OAuthGateScreen({ providers, authUrls }: OAuthGateScreenProps) {
-  const [isIframe, setIsIframe] = useState(false);
   const [oauthError, setOauthError] = useState<string | null>(null);
 
   useEffect(() => {
-    setIsIframe(window.parent !== window);
-
     const params = new URLSearchParams(window.location.search);
     const error = params.get("oauth_error");
 
@@ -39,35 +30,6 @@ export function OAuthGateScreen({ providers, authUrls }: OAuthGateScreenProps) {
       setOauthError("Connection was declined. Please try again.");
     }
   }, []);
-
-  useEffect(() => {
-    if (!isIframe) {
-      return;
-    }
-
-    const requirements: OAuthRequirement[] = Object.entries(providers).map(
-      ([provider, status]) => ({
-        provider,
-        requiredAccess: status.requiredAccess || status.access || "readonly",
-        resourceId: status.resourceId || "",
-      })
-    );
-
-    window.parent.postMessage(
-      { type: "MAJOR_USER_OAUTH_REQUIRED", requirements },
-      "*"
-    );
-  }, [isIframe, providers]);
-
-  if (isIframe) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background p-4">
-        <div className="text-center text-muted-foreground">
-          <p className="text-sm">Waiting for connection...</p>
-        </div>
-      </div>
-    );
-  }
 
   const providerEntries = Object.entries(providers);
 
