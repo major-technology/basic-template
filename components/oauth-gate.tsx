@@ -74,7 +74,8 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  // Build auth URLs for providers that need connection
+  // Fetch actual OAuth authorization URLs server-side (the endpoint requires auth
+  // which is only available via the JWT, not from the browser)
   const currentUrl = buildCurrentUrl(h);
   const authUrls: Record<string, string> = {};
   const gateProviders: Record<string, ProviderStatus> = {};
@@ -86,7 +87,22 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
         returnUrl: currentUrl,
       });
 
-      authUrls[provider] = `${RESOURCE_API_BROWSER_URL}/user-oauth/${provider}/auth-url?${params.toString()}`;
+      try {
+        const authRes = await fetch(
+          `${RESOURCE_API_URL}/internal/user-oauth/${provider}/auth-url?${params.toString()}`,
+          {
+            headers: { "x-major-user-jwt": userJwt },
+            cache: "no-store",
+          },
+        );
+
+        if (authRes.ok) {
+          const authData = (await authRes.json()) as { authUrl: string };
+          authUrls[provider] = authData.authUrl;
+        }
+      } catch {
+        // Skip this provider if we can't get the auth URL
+      }
     }
 
     gateProviders[provider] = {
