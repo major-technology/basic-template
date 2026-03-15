@@ -20,14 +20,6 @@ interface StatusResponse {
   providers: Record<string, StatusResponseProvider>;
 }
 
-function buildCurrentUrl(h: Headers): string {
-  const proto = h.get("x-forwarded-proto") || "https";
-  const host = h.get("host") || "localhost";
-  const path = h.get("x-forwarded-uri") || h.get("x-invoke-path") || "/";
-
-  return `${proto}://${host}${path}`;
-}
-
 export async function OAuthGate({ children }: { children: ReactNode }) {
   const h = await headers();
   const userJwt = h.get("x-major-user-jwt");
@@ -71,8 +63,9 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
   }
 
   // Fetch actual OAuth authorization URLs server-side (the endpoint requires auth
-  // which is only available via the JWT, not from the browser)
-  const currentUrl = buildCurrentUrl(h);
+  // which is only available via the JWT, not from the browser).
+  // No returnUrl — the client always uses a popup flow so the callback uses
+  // postMessage + window.close() instead of redirecting.
   const authUrls: Record<string, string> = {};
   const gateProviders: Record<string, ProviderStatus> = {};
 
@@ -80,7 +73,6 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
     if (status.resourceId) {
       const params = new URLSearchParams({
         resourceId: status.resourceId,
-        returnUrl: currentUrl,
       });
 
       try {

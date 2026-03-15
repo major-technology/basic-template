@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 export interface ProviderStatus {
   status: "missing" | "elevation_required";
@@ -15,21 +15,67 @@ interface OAuthGateScreenProps {
   authUrls: Record<string, string>;
 }
 
+const OAUTH_POPUP_WIDTH = 600;
+const OAUTH_POPUP_HEIGHT = 700;
+const OAUTH_POLL_INTERVAL_MS = 500;
+
 const PROVIDER_DISPLAY: Record<string, { name: string; logo: () => React.ReactNode }> = {
   google: { name: "Google", logo: GoogleLogo },
 };
 
 export function OAuthGateScreen({ providers, authUrls }: OAuthGateScreenProps) {
-  const [oauthError] = useState<string | null>(() => {
-    if (typeof window === "undefined") {
-      return null;
+  const [oauthError, setOauthError] = useState<string | null>(null);
+  const popupRef = useRef<Window | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Listen for postMessage from popup callback
+  useEffect(() => {
+    const handler = (event: MessageEvent) => {
+      if (event.data?.type === "MAJOR_OAUTH_CONNECTED") {
+        popupRef.current?.close();
+        popupRef.current = null;
+        window.location.reload();
+      }
+
+      if (event.data?.type === "MAJOR_OAUTH_ERROR") {
+        setOauthError("Connection failed. Please try again.");
+        popupRef.current?.close();
+        popupRef.current = null;
+      }
+    };
+
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, []);
+
+  const handleConnect = useCallback((authUrl: string) => {
+    const left = window.screenX + (window.outerWidth - OAUTH_POPUP_WIDTH) / 2;
+    const top = window.screenY + (window.outerHeight - OAUTH_POPUP_HEIGHT) / 2;
+
+    popupRef.current = window.open(
+      authUrl,
+      "oauth-connect",
+      `width=${OAUTH_POPUP_WIDTH},height=${OAUTH_POPUP_HEIGHT},left=${left},top=${top},popup=yes`,
+    );
+
+    // Poll for popup close as fallback (e.g. user closes popup manually)
+    if (pollRef.current) {
+      clearInterval(pollRef.current);
     }
 
-    const params = new URLSearchParams(window.location.search);
-    return params.get("oauth_error") === "declined"
-      ? "Connection was declined. Please try again."
-      : null;
-  });
+    pollRef.current = setInterval(() => {
+      if (popupRef.current?.closed) {
+        popupRef.current = null;
+
+        if (pollRef.current) {
+          clearInterval(pollRef.current);
+          pollRef.current = null;
+        }
+
+        window.location.reload();
+      }
+    }, OAUTH_POLL_INTERVAL_MS);
+  }, []);
 
   const providerEntries = Object.entries(providers);
 
@@ -75,6 +121,7 @@ export function OAuthGateScreen({ providers, authUrls }: OAuthGateScreenProps) {
                   isElevation={isElevation}
                   authUrl={authUrl}
                   logo={display?.logo}
+                  onConnect={handleConnect}
                 />
               </div>
             );
@@ -97,16 +144,18 @@ function ProviderButton({
   isElevation,
   authUrl,
   logo: Logo,
+  onConnect,
 }: {
   provider: string;
   displayName: string;
   isElevation: boolean;
   authUrl?: string;
   logo?: () => React.ReactNode;
+  onConnect: (authUrl: string) => void;
 }) {
   const handleClick = () => {
     if (authUrl) {
-      window.location.href = authUrl;
+      onConnect(authUrl);
     }
   };
 
@@ -125,7 +174,6 @@ function ProviderButton({
     );
   }
 
-  // Fallback for other providers
   return (
     <button
       onClick={handleClick}
