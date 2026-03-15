@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export interface ProviderStatus {
   status: "missing" | "elevation_required";
@@ -104,22 +104,46 @@ function ProviderButton({
   authUrl?: string;
   logo?: () => React.ReactNode;
 }) {
-  const handleClick = () => {
-    if (authUrl) {
-      window.location.href = authUrl;
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = useCallback(async () => {
+    if (!authUrl) {
+      return;
     }
-  };
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(authUrl, { credentials: "include" });
+
+      if (!res.ok) {
+        console.error("Failed to get OAuth auth URL");
+        setLoading(false);
+        return;
+      }
+
+      const data = await res.json();
+      window.location.href = data.authUrl;
+    } catch (err) {
+      console.error("Failed to initiate OAuth connection:", err);
+      setLoading(false);
+    }
+  }, [authUrl]);
 
   if (provider === "google") {
     return (
       <button
         onClick={handleClick}
-        disabled={!authUrl}
+        disabled={!authUrl || loading}
         className="inline-flex h-10 w-full cursor-pointer items-center justify-center gap-3 rounded-md border border-[#747775] bg-white px-6 text-sm font-medium text-[#1f1f1f] transition-colors hover:bg-[#f2f2f2] active:bg-[#e8e8e8] disabled:pointer-events-none disabled:opacity-50"
       >
-        {Logo && <Logo />}
+        {Logo && !loading && <Logo />}
         <span>
-          {isElevation ? "Update Google Permissions" : "Sign in with Google"}
+          {loading
+            ? "Connecting..."
+            : isElevation
+              ? "Update Google Permissions"
+              : "Sign in with Google"}
         </span>
       </button>
     );
@@ -129,13 +153,15 @@ function ProviderButton({
   return (
     <button
       onClick={handleClick}
-      disabled={!authUrl}
+      disabled={!authUrl || loading}
       className="inline-flex h-10 w-full cursor-pointer items-center justify-center gap-3 rounded-md bg-foreground px-6 text-sm font-medium text-background transition-colors hover:bg-foreground/90 disabled:pointer-events-none disabled:opacity-50"
     >
       <span>
-        {isElevation
-          ? `Update ${displayName} Permissions`
-          : `Connect with ${displayName}`}
+        {loading
+          ? "Connecting..."
+          : isElevation
+            ? `Update ${displayName} Permissions`
+            : `Connect with ${displayName}`}
       </span>
     </button>
   );
