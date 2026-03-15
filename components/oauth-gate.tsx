@@ -4,13 +4,9 @@ import type { ReactNode } from "react";
 import { OAuthGateScreen } from "./oauth-gate-screen";
 import type { ProviderStatus } from "./oauth-gate-screen";
 
-// Pod-reachable URL for server-side status checks
+// Pod-reachable URL for server-side API calls
 const RESOURCE_API_URL =
   process.env.RESOURCE_API_URL || process.env.MAJOR_API_BASE_URL || "https://go-api.prod.major.build";
-
-// Browser-reachable URL for OAuth redirects (falls back to RESOURCE_API_URL for prod/staging where they're the same)
-const RESOURCE_API_BROWSER_URL =
-  process.env.RESOURCE_API_BROWSER_URL || RESOURCE_API_URL;
 
 interface StatusResponseProvider {
   status: string;
