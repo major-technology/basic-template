@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export interface ProviderStatus {
   status: "missing" | "elevation_required";
@@ -20,16 +20,16 @@ const PROVIDER_DISPLAY: Record<string, { name: string; logo: () => React.ReactNo
 };
 
 export function OAuthGateScreen({ providers, authUrls }: OAuthGateScreenProps) {
-  const [oauthError, setOauthError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const error = params.get("oauth_error");
-
-    if (error === "declined") {
-      setOauthError("Connection was declined. Please try again.");
+  const [oauthError] = useState<string | null>(() => {
+    if (typeof window === "undefined") {
+      return null;
     }
-  }, []);
+
+    const params = new URLSearchParams(window.location.search);
+    return params.get("oauth_error") === "declined"
+      ? "Connection was declined. Please try again."
+      : null;
+  });
 
   const providerEntries = Object.entries(providers);
 

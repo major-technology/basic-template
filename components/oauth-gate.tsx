@@ -40,7 +40,7 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  let statusData: StatusResponse;
+  let statusData: StatusResponse | null = null;
 
   try {
     const res = await fetch(`${RESOURCE_API_URL}/internal/user-oauth/status`, {
@@ -48,13 +48,14 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
       cache: "no-store",
     });
 
-    if (!res.ok) {
-      return <>{children}</>;
+    if (res.ok) {
+      statusData = (await res.json()) as StatusResponse;
     }
-
-    statusData = (await res.json()) as StatusResponse;
   } catch {
     // Fail open — platform outage should not block deployed apps
+  }
+
+  if (!statusData) {
     return <>{children}</>;
   }
 
