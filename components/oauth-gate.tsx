@@ -1,25 +1,22 @@
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { OAuthGateScreen } from "./oauth-gate-screen";
-import type { ProviderStatus } from "./oauth-gate-screen";
-
-// Pod-reachable URL for server-side API calls
 const RESOURCE_API_URL =
   process.env.RESOURCE_API_URL || process.env.MAJOR_API_BASE_URL || "https://go-api.prod.major.build";
 
-interface StatusResponseProvider {
-  status: string;
-  access?: string;
-  currentAccess?: string;
-  requiredAccess?: string;
-  resourceId?: string;
-}
-
 interface StatusResponse {
-  providers: Record<string, StatusResponseProvider>;
+  providers: Record<string, { status: string }>;
+  connectToken?: string;
 }
 
+/**
+ * OAuthGate — server component that checks whether the current user has
+ * connected all required OAuth providers for this app. If any are missing,
+ * it redirects to the platform-hosted connect page (served by go-api) where
+ * the user can authenticate. After all providers are connected, the connect
+ * page redirects back here and the app renders normally.
+ */
 export async function OAuthGate({ children }: { children: ReactNode }) {
   const h = await headers();
   const userJwt = h.get("x-major-user-jwt");
@@ -28,79 +25,29 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  let statusData: StatusResponse | null = null;
-
   try {
-    const res = await fetch(`${RESOURCE_API_URL}/internal/user-oauth/status`, {
+    const res = await fetch(`${RESOURCE_API_URL}/user-oauth/status`, {
       headers: { "x-major-user-jwt": userJwt },
       cache: "no-store",
     });
 
-    if (res.ok) {
-      statusData = (await res.json()) as StatusResponse;
+    if (!res.ok) {
+      // Fail open — platform outage should not block deployed apps
+      return <>{children}</>;
+    }
+
+    const data = (await res.json()) as StatusResponse;
+
+    if (data.connectToken) {
+      const proto = h.get("x-forwarded-proto") || "https";
+      const host = h.get("host");
+      const currentUrl = `${proto}://${host}/`;
+      const connectUrl = `${RESOURCE_API_URL}/user-oauth/connect?token=${encodeURIComponent(data.connectToken)}&returnUrl=${encodeURIComponent(currentUrl)}`;
+      redirect(connectUrl);
     }
   } catch {
-    // Fail open — platform outage should not block deployed apps
+    // Fail open — network error should not block deployed apps
   }
 
-  if (!statusData) {
-    return <>{children}</>;
-  }
-
-  const providers = statusData.providers;
-
-  if (!providers || Object.keys(providers).length === 0) {
-    return <>{children}</>;
-  }
-
-  // Check if all providers are connected
-  const needsConnection = Object.entries(providers).filter(
-    ([, p]) => p.status === "missing" || p.status === "elevation_required"
-  );
-
-  if (needsConnection.length === 0) {
-    return <>{children}</>;
-  }
-
-  // Fetch actual OAuth authorization URLs server-side (the endpoint requires auth
-  // which is only available via the JWT, not from the browser).
-  // No returnUrl — the client always uses a popup flow so the callback uses
-  // postMessage + window.close() instead of redirecting.
-  const authUrls: Record<string, string> = {};
-  const gateProviders: Record<string, ProviderStatus> = {};
-
-  for (const [provider, status] of needsConnection) {
-    if (status.resourceId) {
-      const params = new URLSearchParams({
-        resourceId: status.resourceId,
-      });
-
-      try {
-        const authRes = await fetch(
-          `${RESOURCE_API_URL}/internal/user-oauth/${provider}/auth-url?${params.toString()}`,
-          {
-            headers: { "x-major-user-jwt": userJwt },
-            cache: "no-store",
-          },
-        );
-
-        if (authRes.ok) {
-          const authData = (await authRes.json()) as { authUrl: string };
-          authUrls[provider] = authData.authUrl;
-        }
-      } catch {
-        // Skip this provider if we can't get the auth URL
-      }
-    }
-
-    gateProviders[provider] = {
-      status: status.status as "missing" | "elevation_required",
-      access: status.access,
-      currentAccess: status.currentAccess,
-      requiredAccess: status.requiredAccess,
-      resourceId: status.resourceId,
-    };
-  }
-
-  return <OAuthGateScreen providers={gateProviders} authUrls={authUrls} />;
+  return <>{children}</>;
 }
