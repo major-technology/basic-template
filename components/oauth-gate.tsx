@@ -2,12 +2,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
-const RESOURCE_API_URL =
-  process.env.RESOURCE_API_URL || process.env.MAJOR_API_BASE_URL || "https://go-api.prod.major.build";
-
-// The Major dashboard URL where the OAuth connect page is hosted.
-// In production this is https://major.tech, locally it's the dev server.
-const MAJOR_APP_URL = process.env.MAJOR_APP_URL || "http://web.localhost:1355";
+const RESOURCE_API_URL = process.env.RESOURCE_API_URL;
+const MAJOR_APP_URL = process.env.MAJOR_APP_URL;
 
 interface StatusResponse {
   providers: Record<string, { status: string }>;
@@ -15,6 +11,10 @@ interface StatusResponse {
 }
 
 async function getConnectToken(userJwt: string): Promise<string | null> {
+  if (!RESOURCE_API_URL) {
+    return null;
+  }
+
   try {
     const res = await fetch(`${RESOURCE_API_URL}/user-oauth/status`, {
       headers: { "x-major-user-jwt": userJwt },
@@ -33,10 +33,6 @@ async function getConnectToken(userJwt: string): Promise<string | null> {
   }
 }
 
-function buildConnectUrl(connectToken: string, returnUrl: string): string {
-  return `${MAJOR_APP_URL}/oauth/connect?token=${encodeURIComponent(connectToken)}&returnUrl=${encodeURIComponent(returnUrl)}`;
-}
-
 /**
  * OAuthGate — server component that checks whether the current user has
  * connected all required OAuth providers for this app. If any are missing,
@@ -45,6 +41,10 @@ function buildConnectUrl(connectToken: string, returnUrl: string): string {
  * connect page redirects back here and the app renders normally.
  */
 export async function OAuthGate({ children }: { children: ReactNode }) {
+  if (!MAJOR_APP_URL) {
+    return <>{children}</>;
+  }
+
   const h = await headers();
   const userJwt = h.get("x-major-user-jwt");
 
@@ -57,8 +57,8 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
   if (connectToken) {
     const proto = h.get("x-forwarded-proto") || "https";
     const host = h.get("host");
-    const currentUrl = `${proto}://${host}/`;
-    redirect(buildConnectUrl(connectToken, currentUrl));
+    const returnUrl = `${proto}://${host}/`;
+    redirect(`${MAJOR_APP_URL}/oauth/connect?token=${encodeURIComponent(connectToken)}&returnUrl=${encodeURIComponent(returnUrl)}`);
   }
 
   return <>{children}</>;
