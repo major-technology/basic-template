@@ -29,6 +29,10 @@ async function getConnectToken(userJwt: string): Promise<string | null> {
   }
 }
 
+function buildConnectUrl(connectToken: string, returnUrl: string): string {
+  return `${RESOURCE_API_URL}/user-oauth/connect?token=${encodeURIComponent(connectToken)}&returnUrl=${encodeURIComponent(returnUrl)}`;
+}
+
 /**
  * OAuthGate — server component that checks whether the current user has
  * connected all required OAuth providers for this app. If any are missing,
@@ -50,8 +54,7 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
     const proto = h.get("x-forwarded-proto") || "https";
     const host = h.get("host");
     const currentUrl = `${proto}://${host}/`;
-    const connectUrl = `${RESOURCE_API_URL}/user-oauth/connect?token=${encodeURIComponent(connectToken)}&returnUrl=${encodeURIComponent(currentUrl)}`;
-    redirect(connectUrl);
+    redirect(buildConnectUrl(connectToken, currentUrl));
   }
 
   return <>{children}</>;
