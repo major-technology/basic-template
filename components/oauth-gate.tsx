@@ -10,6 +10,25 @@ interface StatusResponse {
   connectToken?: string;
 }
 
+async function getConnectToken(userJwt: string): Promise<string | null> {
+  try {
+    const res = await fetch(`${RESOURCE_API_URL}/user-oauth/status`, {
+      headers: { "x-major-user-jwt": userJwt },
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+
+    const data = (await res.json()) as StatusResponse;
+    return data.connectToken ?? null;
+  } catch {
+    // Fail open — platform/network issues should not block deployed apps
+    return null;
+  }
+}
+
 /**
  * OAuthGate — server component that checks whether the current user has
  * connected all required OAuth providers for this app. If any are missing,
@@ -25,28 +44,14 @@ export async function OAuthGate({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  try {
-    const res = await fetch(`${RESOURCE_API_URL}/user-oauth/status`, {
-      headers: { "x-major-user-jwt": userJwt },
-      cache: "no-store",
-    });
+  const connectToken = await getConnectToken(userJwt);
 
-    if (!res.ok) {
-      // Fail open — platform outage should not block deployed apps
-      return <>{children}</>;
-    }
-
-    const data = (await res.json()) as StatusResponse;
-
-    if (data.connectToken) {
-      const proto = h.get("x-forwarded-proto") || "https";
-      const host = h.get("host");
-      const currentUrl = `${proto}://${host}/`;
-      const connectUrl = `${RESOURCE_API_URL}/user-oauth/connect?token=${encodeURIComponent(data.connectToken)}&returnUrl=${encodeURIComponent(currentUrl)}`;
-      redirect(connectUrl);
-    }
-  } catch {
-    // Fail open — network error should not block deployed apps
+  if (connectToken) {
+    const proto = h.get("x-forwarded-proto") || "https";
+    const host = h.get("host");
+    const currentUrl = `${proto}://${host}/`;
+    const connectUrl = `${RESOURCE_API_URL}/user-oauth/connect?token=${encodeURIComponent(connectToken)}&returnUrl=${encodeURIComponent(currentUrl)}`;
+    redirect(connectUrl);
   }
 
   return <>{children}</>;
