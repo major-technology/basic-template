@@ -78,17 +78,13 @@ GET /api/healthz
 
 The deployment platform regularly pings this endpoint to ensure the application container is running properly. Removing or modifying this endpoint will cause health check failures and potential service interruptions.
 
-## Development Workflow
+## Build commands
+
+Generally you should not build (lint as much as possible). If you need to for any reason:
 
 ```bash
-# Start dev server (with Turbo mode)
-pnpm dev
-
 # Build for production
 pnpm build
-
-# Start production server
-pnpm start
 
 # Run linting and type checking
 pnpm lint
@@ -127,18 +123,6 @@ import { cn } from "@/lib/utils";
 
 <div className={cn("base-class", conditional && "conditional-class")} />;
 ```
-
-## Next Steps for AI Agents
-
-When given a project brief:
-
-1. **Understand the requirements** - Ask clarifying questions if needed
-2. **Update CLAUDE.MD** - Replace this file with project-specific context
-3. **Build [app/page.tsx](app/page.tsx)** - Create the actual home page
-4. **Install shadcn components** - Add UI components as needed with `npx shadcn@latest add <component>`
-5. **Create API routes** - Add backend endpoints in [app/api/](app/api/)
-6. **Add custom components** - Build reusable components in [components/](components/)
-7. **Test thoroughly** - Run `pnpm dev` and verify functionality
 
 ## Template Configuration
 
