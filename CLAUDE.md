@@ -46,6 +46,13 @@ This is a Next.js 16 application with the App Router architecture:
 - **shadcn/ui** components (pre-initialized)
 - **lucide-react** for icons
 - **class-variance-authority** for component variants
+- **Theme** — configured via generated files in `app/theme.css` (CSS variables) and `lib/theme.ts` (font + chart colors). Do not edit these files manually. A dedicated theme skill provides detailed guidance on elevation, logos, and design tokens. For charts, use the `chartColors` array from `@/lib/theme` — it contains 5 theme-aware colors. Assign them to each data series by index:
+  ```tsx
+  import { chartColors } from "@/lib/theme";
+  {data.map((entry, i) => (
+    <Cell key={i} fill={chartColors[i % chartColors.length]} />
+  ))}
+  ```
 
 ### Development
 
