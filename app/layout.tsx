@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { themeFontClassName } from "@/lib/theme";
 import { cn } from "@/lib/utils";
-
+import { ErrorReporterProvider } from "@major-tech/error-reporter";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(themeFontClassName, "antialiased")}>
-        {children}
+        <ErrorReporterProvider
+          endpoint={process.env.MAJOR_API_BASE_URL || ""}
+          jwtToken={process.env.MAJOR_JWT_TOKEN || ""}
+        >
+          {children}
+        </ErrorReporterProvider>
       </body>
     </html>
   );
