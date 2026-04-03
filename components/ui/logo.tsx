@@ -1,5 +1,5 @@
 export function Logo({
-  fallbackLabel = "Logo",
+  fallbackLabel = "",
   className,
 }: {
   variant?: "full" | "icon";
