@@ -9,3 +9,17 @@ export async function register() {
     });
   }
 }
+
+export async function onRequestError(
+  err: Error & { digest?: string },
+  request: { path: string; method: string; headers: Record<string, string> },
+  context: {
+    routerKind: string;
+    routePath: string;
+    routeType: string;
+    renderSource?: string;
+  },
+) {
+  const { captureRequestError } = await import("@major-tech/error-reporter");
+  await captureRequestError(err, request, context);
+}

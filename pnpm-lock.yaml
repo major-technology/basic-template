@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@major-tech/error-reporter':
-        specifier: ^0.1.1
-        version: 0.1.1(react@19.2.3)
+        specifier: ^0.2.0
+        version: 0.2.1(react@19.2.3)
       '@major-tech/resource-client':
         specifier: ^0.2.27
         version: 0.2.29
@@ -500,8 +500,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@major-tech/error-reporter@0.1.1':
-    resolution: {integrity: sha512-7dLdvXTPHjHorF/jPH+ZU9YDrPcOrHZW2PDlZLCDDoypkx09URzPgypMzDq8AnKvskw1z9rWVjdn9Ady4GSYxA==}
+  '@major-tech/error-reporter@0.2.1':
+    resolution: {integrity: sha512-yQ2gacImy4OS6fgpTLwZYWEByr1XQfNXYvGbUT23LrLSaqJRNM3GKo0U2phwvV8BBaLrr4Qpu3t0y3vmxyrgVQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: '>=18.0.0'
@@ -3000,7 +3000,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@major-tech/error-reporter@0.1.1(react@19.2.3)':
+  '@major-tech/error-reporter@0.2.1(react@19.2.3)':
     optionalDependencies:
       react: 19.2.3
 
