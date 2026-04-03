@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { themeFontClassName } from "@/lib/theme";
 import { cn } from "@/lib/utils";
-import { ErrorReporterProvider } from "@major-tech/error-reporter";
+import { ErrorReporterProvider } from "@major-tech/error-reporter/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
