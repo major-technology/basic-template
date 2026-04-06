@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@major-tech/error-reporter':
-        specifier: ^0.2.0
+        specifier: ^0.2.1
         version: 0.2.1(react@19.2.3)
       '@major-tech/resource-client':
         specifier: ^0.2.27
