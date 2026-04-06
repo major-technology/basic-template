@@ -10,8 +10,8 @@
     "resource:manage": "major resource manage"
   },
   "dependencies": {
-    "@major-tech/error-reporter": "^0.2.1",
-    "@major-tech/resource-client": "^0.2.27",
+    "@major-tech/error-reporter": "^0.2.3",
+    "@major-tech/resource-client": "~0.2.49",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.542.0",
