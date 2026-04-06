@@ -12,8 +12,8 @@ importers:
         specifier: ^0.2.3
         version: 0.2.3(react@19.2.3)
       '@major-tech/resource-client':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ~0.2.49
+        version: 0.2.49
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -509,8 +509,8 @@ packages:
       react:
         optional: true
 
-  '@major-tech/resource-client@0.3.0':
-    resolution: {integrity: sha512-NUpwaGCZBOTLROwhb7mR9GRfQVZ2EJMp7luWSDkkyY6yP9k0LYeCd39EYCr3zZk39PV0lRKPy9PPZAhgqI0ttw==}
+  '@major-tech/resource-client@0.2.49':
+    resolution: {integrity: sha512-TN7KhgWBwkOTwbtWLvFgjf2MKOfMzVtXUABHRz2QgIpuW7aU6nQo+KQyTt7vbbFRjwAMg7ciIejPw+yXMw5kpw==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -2976,7 +2976,7 @@ snapshots:
     optionalDependencies:
       react: 19.2.3
 
-  '@major-tech/resource-client@0.3.0':
+  '@major-tech/resource-client@0.2.49':
     dependencies:
       '@aws-sdk/client-dynamodb': 3.1025.0
     transitivePeerDependencies:
