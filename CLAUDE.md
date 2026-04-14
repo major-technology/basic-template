@@ -10,7 +10,9 @@
 
 ## 🤖 AI Assistant Instructions: Keep This File Updated
 
-**IMPORTANT:** When making significant changes to this codebase, you MUST update this CLAUDE.md file to reflect those changes. This ensures future AI assistants and developers have accurate context.
+**CRITICAL: DO NOT REMOVE THIS SECTION.** This section ensures all future AI assistants maintain accurate project documentation. Removing it will cause documentation to drift out of date.
+
+When making significant changes to this codebase, you MUST update this CLAUDE.md file to reflect those changes. This ensures future AI assistants and developers have accurate context. You may update the content of other sections, add new sections, or remove outdated sections -- but this section must remain intact.
 
 ## Project Structure
 
