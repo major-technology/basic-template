@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@major-tech/agents-client':
+        specifier: ^0.1.1
+        version: 0.1.1(next@16.1.7(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@major-tech/error-reporter':
         specifier: ^0.2.3
         version: 0.2.3(react@19.2.3)
@@ -499,6 +502,15 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@major-tech/agents-client@0.1.1':
+    resolution: {integrity: sha512-jm+80WFpqTKN3fjfzs59yxjo4NQcWqOnVMTxmtJljKGwihCr5WSDZTXH2r7d93XKT78EIenC8EvBYorCm6XU6w==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      next: '>=14.0.0'
+    peerDependenciesMeta:
+      next:
+        optional: true
 
   '@major-tech/error-reporter@0.2.3':
     resolution: {integrity: sha512-dsxkO6ivZpcVWiJ+8muuskL6oTZW20Dh8Sd0Ok8pvZM4gPMrKbyyxQDsV598uxp0LU+jFmiQxDYK8VPcRelgAw==}
@@ -2971,6 +2983,10 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@major-tech/agents-client@0.1.1(next@16.1.7(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
+    optionalDependencies:
+      next: 16.1.7(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
 
   '@major-tech/error-reporter@0.2.3(react@19.2.3)':
     optionalDependencies:
