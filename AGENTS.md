@@ -1,0 +1,145 @@
+# Next.js Starter Template - AI Agent Guide
+
+## IMPORTANT: This is a Starter Template!
+
+**This is a blank canvas meant to be transformed into a real application.** When you receive instructions about what to build:
+
+1. **Update this AGENTS.md file first** with project-specific context about the actual application. Also keep CLAUDE.md in sync for Claude-based agents.
+2. **Replace the placeholder content in [app/page.tsx](app/page.tsx)** with the real first page of the application
+3. **Build the application** according to the user's requirements
+
+## 🤖 AI Assistant Instructions: Keep This File Updated
+
+**CRITICAL: DO NOT REMOVE THIS SECTION.** This section ensures all future AI assistants maintain accurate project documentation. Removing it will cause documentation to drift out of date.
+
+When making significant changes to this codebase, you MUST update this AGENTS.md file to reflect those changes and keep CLAUDE.md in sync if present. This ensures future AI assistants and developers have accurate context. You may update the content of other sections, add new sections, or remove outdated sections -- but this section must remain intact.
+
+## Project Structure
+
+This is a Next.js 16 application with the App Router architecture:
+
+### Key Directories
+
+- **[app/](app/)** - App Router pages and layouts
+
+  - **[app/page.tsx](app/page.tsx)** - Home page (currently placeholder, REPLACE THIS)
+  - **[app/layout.tsx](app/layout.tsx)** - Root layout with Tailwind CSS setup
+  - **[app/api/](app/api/)** - Create API routes here (e.g., `app/api/users/route.ts`)
+    - **[app/api/healthz/](app/api/healthz/)** - Health check endpoint (DO NOT REMOVE)
+
+- **[components/](components/)** - Reusable React components
+
+  - **[components/ui/](components/ui/)** - shadcn/ui components (install as needed)
+
+- **[lib/](lib/)** - Utility functions and shared code
+  - **[lib/utils.ts](lib/utils.ts)** - Common utilities including `cn()` for class merging
+
+## Tech Stack
+
+### Core
+
+- **Next.js 16.1** with App Router
+- **React 19.1** (stable)
+- **TypeScript 5**
+
+### Styling
+
+- **Tailwind CSS 4** (PostCSS)
+- **shadcn/ui** components (pre-initialized)
+- **lucide-react** for icons
+- **class-variance-authority** for component variants
+- **Theme** — configured via generated files in `app/theme.css` (CSS variables) and `lib/theme.ts` (font + chart colors). Do not edit these files manually. A dedicated theme skill provides detailed guidance on elevation, logos, and design tokens. For charts, use the `chartColors` array from `@/lib/theme` — it contains 5 theme-aware colors. Assign them to each data series by index:
+  ```tsx
+  import { chartColors } from "@/lib/theme";
+  {data.map((entry, i) => (
+    <Cell key={i} fill={chartColors[i % chartColors.length]} />
+  ))}
+  ```
+
+### Development
+
+- **Turbo mode** enabled for faster dev server
+- **ESLint** + **TypeScript** checking via `pnpm lint`
+
+## Working with shadcn/ui
+
+**shadcn is already initialized** in this project. To add components:
+
+```bash
+npx shadcn@latest add button
+npx shadcn@latest add card
+npx shadcn@latest add dialog
+# etc.
+```
+
+Components will be installed to [components/ui/](components/ui/). See the [shadcn/ui docs](https://ui.shadcn.com/) for available components.
+
+## Health Check Endpoint
+
+**CRITICAL: DO NOT REMOVE OR MODIFY [app/api/healthz/route.ts](app/api/healthz/route.ts)**
+
+This endpoint is used by the deployment infrastructure to monitor container health:
+
+```
+GET /api/healthz
+→ { "status": "healthy", "timestamp": "2025-10-23T..." }
+```
+
+The deployment platform regularly pings this endpoint to ensure the application container is running properly. Removing or modifying this endpoint will cause health check failures and potential service interruptions.
+
+## Build commands
+
+Generally you should not build (lint as much as possible). If you need to for any reason:
+
+```bash
+# Build for production
+pnpm build
+
+# Run linting and type checking
+pnpm lint
+```
+
+## Resource Clients
+
+**CRITICAL**: All resource access MUST go through auto-generated clients from `@major-tech/resource-client`.
+
+### Using Generated Clients
+
+Import and use the auto-generated clients from `/clients/`:
+
+```typescript
+import { ordersDbClient } from "./clients";
+
+const result = await ordersDbClient.invoke(
+  "SELECT * FROM orders WHERE user_id = $1",
+  [userId],
+  "fetch-user-orders"
+);
+
+if (result.ok) {
+  console.log(result.result.rows);
+}
+```
+
+## Utilities
+
+### Styling
+
+Use the `cn()` utility from [lib/utils.ts](lib/utils.ts) to merge Tailwind classes:
+
+```typescript
+import { cn } from "@/lib/utils";
+
+<div className={cn("base-class", conditional && "conditional-class")} />;
+```
+
+## Template Configuration
+
+- **Package manager**: pnpm (preferred)
+- **Next.js version**: 16.1
+- **Git**: Initialized, current branch: `main`
+- **shadcn config**: [components.json](components.json)
+
+---
+
+**Remember**: This template is intentionally minimal. Your job is to transform it into a fully functional application based on the user's requirements!
