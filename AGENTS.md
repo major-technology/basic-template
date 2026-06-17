@@ -4,7 +4,7 @@
 
 **This is a blank canvas meant to be transformed into a real application.** When you receive instructions about what to build:
 
-1. **Update this CLAUDE.MD file first** with project-specific context about the actual application. Also update README.md
+1. **Update this AGENTS.md file first** with project-specific context about the actual application. Also keep CLAUDE.md in sync for Claude-based agents.
 2. **Replace the placeholder content in [app/page.tsx](app/page.tsx)** with the real first page of the application
 3. **Build the application** according to the user's requirements
 
@@ -12,7 +12,7 @@
 
 **CRITICAL: DO NOT REMOVE THIS SECTION.** This section ensures all future AI assistants maintain accurate project documentation. Removing it will cause documentation to drift out of date.
 
-When making significant changes to this codebase, you MUST update this CLAUDE.md file to reflect those changes. This ensures future AI assistants and developers have accurate context. You may update the content of other sections, add new sections, or remove outdated sections -- but this section must remain intact.
+When making significant changes to this codebase, you MUST update this AGENTS.md file to reflect those changes and keep CLAUDE.md in sync if present. This ensures future AI assistants and developers have accurate context. You may update the content of other sections, add new sections, or remove outdated sections -- but this section must remain intact.
 
 ## Project Structure
 
