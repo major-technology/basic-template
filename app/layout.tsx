@@ -15,12 +15,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // RootLayout is a server component, so it can read the (server-only) app id
+  // env vars and pass the value down as a prop — the browser can't read them
+  // itself. Without this, the client reporter has no applicationId and drops
+  // browser/React errors.
+  const majorApplicationId =
+    process.env.APPLICATION_ID || process.env.MAJOR_APPLICATION_ID || "";
+
   return (
     <html lang="en">
       <body className={cn(themeFontClassName, "antialiased")}>
         <ErrorReporterProvider
           endpoint={process.env.MAJOR_API_BASE_URL || ""}
           jwtToken={process.env.MAJOR_JWT_TOKEN || ""}
+          applicationId={majorApplicationId}
         >
           {children}
         </ErrorReporterProvider>
