@@ -6,6 +6,8 @@ export async function register() {
         process.env.MAJOR_API_BASE_URL ||
         "https://go-api.prod.major.build",
       jwtToken: process.env.MAJOR_JWT_TOKEN || "",
+      applicationId:
+        process.env.APPLICATION_ID || process.env.MAJOR_APPLICATION_ID,
     });
   }
 }
