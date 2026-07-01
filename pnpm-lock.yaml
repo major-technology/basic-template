@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(next@16.1.7(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@major-tech/error-reporter':
-        specifier: ^0.2.3
-        version: 0.2.3(react@19.2.3)
+        specifier: ^0.2.6
+        version: 0.2.6(react@19.2.3)
       '@major-tech/resource-client':
         specifier: ~0.2.49
         version: 0.2.49
@@ -512,8 +512,8 @@ packages:
       next:
         optional: true
 
-  '@major-tech/error-reporter@0.2.3':
-    resolution: {integrity: sha512-dsxkO6ivZpcVWiJ+8muuskL6oTZW20Dh8Sd0Ok8pvZM4gPMrKbyyxQDsV598uxp0LU+jFmiQxDYK8VPcRelgAw==}
+  '@major-tech/error-reporter@0.2.6':
+    resolution: {integrity: sha512-1nzZRx4QfUHoFrby7FlzVav2/gAebvHAyhEyLGtN+iYQYrWeWDmiqtQKu/RkZdNkbrj+KNVkLzQXtPAu6l4bEA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: '>=18.0.0'
@@ -2988,7 +2988,7 @@ snapshots:
     optionalDependencies:
       next: 16.1.7(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
 
-  '@major-tech/error-reporter@0.2.3(react@19.2.3)':
+  '@major-tech/error-reporter@0.2.6(react@19.2.3)':
     optionalDependencies:
       react: 19.2.3
 
