@@ -1,5 +1,0 @@
-{
-	"$schema": "https://api.prod.major.build/public/cron.schema.json",
-	"version": "1",
-	"crons": []
-}
