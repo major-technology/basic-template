@@ -1,0 +1,37 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": [
+		"react",
+		"nextjs",
+		"jsx-a11y",
+		"typescript",
+		"import"
+	],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "warn",
+		"perf": "warn"
+	},
+	"rules": {
+		"typescript/ban-ts-comment": "error",
+		"typescript/no-array-constructor": "error",
+		"typescript/no-empty-object-type": "error",
+		"typescript/no-explicit-any": "error",
+		"typescript/no-require-imports": "error",
+		"typescript/no-unsafe-function-type": "error",
+		"react/display-name": "error",
+		"react/no-unescaped-entities": "error",
+		"react/require-render-return": "error",
+		"import/no-anonymous-default-export": "error",
+		"no-var": "error",
+		"prefer-const": "error",
+		"prefer-rest-params": "error",
+		"prefer-spread": "error",
+		"react/react-in-jsx-scope": "off",
+		"import/no-unassigned-import": "off"
+	},
+	"ignorePatterns": [
+		".next",
+		"node_modules"
+	]
+}
