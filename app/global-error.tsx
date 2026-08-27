@@ -12,7 +12,7 @@ export default function GlobalError({
   useReportError(error);
 
   return (
-    <html>
+    <html lang="en">
       <body>
         <div
           style={{

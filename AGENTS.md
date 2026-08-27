@@ -38,9 +38,9 @@ This is a Next.js 16 application with the App Router architecture:
 
 ### Core
 
-- **Next.js 16.1** with App Router
-- **React 19.1** (stable)
-- **TypeScript 5**
+- **Next.js 16.3** with App Router
+- **React 19.2** (stable)
+- **TypeScript 7** (native compiler)
 
 ### Styling
 
@@ -59,7 +59,7 @@ This is a Next.js 16 application with the App Router architecture:
 ### Development
 
 - **Turbo mode** enabled for faster dev server
-- **ESLint** + **TypeScript** checking via `pnpm lint`
+- **oxlint** + **TypeScript** checking via `pnpm lint` (config: `.oxlintrc.json`)
 
 ## Working with shadcn/ui
 
