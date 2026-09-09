@@ -6,7 +6,7 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "oxlint && tsc --noEmit",
+    "lint": "oxlint --quiet && oxlint --format=unix && tsc --noEmit",
     "resource:manage": "major resource manage"
   },
   "dependencies": {
