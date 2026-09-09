@@ -5,10 +5,11 @@
 		"nextjs",
 		"jsx-a11y",
 		"typescript",
-		"import"
+		"import",
+		"unicorn"
 	],
 	"categories": {
-		"correctness": "error",
+		"correctness": "warn",
 		"suspicious": "warn",
 		"perf": "warn"
 	},
@@ -28,8 +29,22 @@
 		"prefer-rest-params": "error",
 		"prefer-spread": "error",
 		"react/react-in-jsx-scope": "off",
-		"import/no-unassigned-import": "off"
+		"import/no-unassigned-import": "off",
+		"react-hooks/rules-of-hooks": "error",
+		"react/set-state-in-effect": "error",
+		"react/purity": "error",
+		"react/immutability": "error"
 	},
+	"overrides": [
+		{
+			"files": [
+				"clients/**"
+			],
+			"rules": {
+				"typescript/no-extraneous-class": "off"
+			}
+		}
+	],
 	"ignorePatterns": [
 		".next",
 		"node_modules"
