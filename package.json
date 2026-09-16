@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@major-tech/agents-client": "^0.2.2",
-    "@major-tech/error-reporter": "^0.2.8",
+    "@major-tech/error-reporter": "^0.2.9",
     "@major-tech/resource-client": "~0.2.81",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
