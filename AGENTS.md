@@ -99,6 +99,14 @@ pnpm build
 pnpm lint
 ```
 
+## Error Reporting
+
+Use `<ErrorReporterProvider>{children}</ErrorReporterProvider>` without credential
+props. Browser errors are forwarded through the reporter's server action, which
+reads `MAJOR_API_BASE_URL`, `MAJOR_JWT_TOKEN`, and `APPLICATION_ID` (or
+`MAJOR_APPLICATION_ID`) on the server. Never pass the token to a client component:
+server-to-client props are serialized into the RSC payload.
+
 ## Resource Clients
 
 **CRITICAL**: All resource access MUST go through auto-generated clients from `@major-tech/resource-client`.
